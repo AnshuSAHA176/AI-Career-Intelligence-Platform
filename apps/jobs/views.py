@@ -15,6 +15,9 @@ class JobListView(generics.ListAPIView):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
+
+    ordering=['-posted_date']
+
     search_fields = [
         "title",
         "company",
