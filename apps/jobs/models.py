@@ -59,7 +59,14 @@ class Job(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     updated_at = models.DateTimeField(auto_now=True)
-
+    class Meta:
+        indexes = [
+            models.Index(fields=["primary_role"]),
+            models.Index(fields=["company"]),
+            models.Index(fields=["work_type"]),
+            models.Index(fields=["employment_type"]),
+            models.Index(fields=["posted_date"]),
+        ]
 
 
     def __str__(self):

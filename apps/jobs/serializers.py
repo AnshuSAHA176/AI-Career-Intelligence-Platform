@@ -2,10 +2,27 @@ from rest_framework import serializers
 from .models import Job
 
 
-class JobSerializer(serializers.ModelSerializer):
+
+
+class JobListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Job
+        fields=[
+            'id',
+            'title','company',
+            'location',
+            'primary_role',
+            'work_type',
+            'employment_type',
+            'minimum_experience',
+            'technologies',
+            'ai_summary'
+        ]
+class JobDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model=Job
         fields="__all__"
+
 
 
 class JobRecommendationsSerializer(serializers.ModelSerializer):

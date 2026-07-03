@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.jobs',
     'corsheaders',
     'silk',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -145,8 +146,13 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = "accounts.User"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+
+    "PAGE_SIZE": 20,
 }
+
 CORS_ALLOW_ALL_ORIGINS = True
