@@ -130,3 +130,18 @@ class job_match(APIView):
           return Response(result)
      
 
+
+class ResumeActiveView(APIView):
+     permission_classes= [IsAuthenticated]
+     def patch(self,request,resume_id):
+          Resume.objects.filter(user=request.user).update(is_active=False)
+          resume=get_object_or_404(
+               Resume,
+               id=resume_id,
+               user=request.user,
+          )
+          resume.is_active=True
+          resume.save(update_fields=['is_active'])
+          return Response({
+                 "message": "Resume activated successfully."
+          })

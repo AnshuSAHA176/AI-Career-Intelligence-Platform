@@ -8,6 +8,7 @@ class Resume(models.Model):
     title=models.CharField(max_length=200)
     file=models.FileField(upload_to='resumes/files')
     extracted_text=models.TextField(blank=True,default='')
+    is_active=models.BooleanField(default=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):

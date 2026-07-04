@@ -10,7 +10,8 @@ class ResumesListSerializer(serializers.ModelSerializer):
             'title',
             'file',
             'uploaded_at',
-            'updated_at'
+            'updated_at',
+            'is_active',
         ]
 
 
@@ -24,6 +25,7 @@ class ResumeSerializer(serializers.ModelSerializer):
                 "extracted_text",
                 "uploaded_at",
                 "updated_at",
+                "is_active",
             ]
         read_only_fields = [
                 "id",
@@ -31,6 +33,7 @@ class ResumeSerializer(serializers.ModelSerializer):
                 "uploaded_at",
                 "updated_at",
             ]
+
 class ResumeAnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         resume=ResumeSerializer()
