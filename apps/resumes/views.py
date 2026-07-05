@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .road_mape import road_map,match_resume
-
+from rest_framework.exceptions import NotFound
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -22,7 +22,8 @@ class ResumesView(generics.ListAPIView):
      permission_classes=[IsAuthenticated]
      def get_queryset(self):
           return Resume.objects.filter(
-               user=self.request.user
+               user=self.request.user,
+               
         )
      
 
@@ -63,13 +64,14 @@ class ResumeUploadView(generics.CreateAPIView):
 
 class ResumeAnalyzeView(APIView):
 
-    def post(self, request, resume_id):
-
-        resume = get_object_or_404(
-            Resume,
-            id=resume_id,
-            user=request.user
-        )
+    def post(self, request):
+        try:
+               resume = Resume.objects.get(
+                    user=request.id,
+                    is_active=True
+               )
+        except Resume.DoesNotExist:
+               raise NotFound("No active resume found. Please activate a resume first.")
 
         result = analyze_resume_ai(
             text=resume.extracted_text,
@@ -101,26 +103,33 @@ class ResumeAnalyzeView(APIView):
         )
 
 class RoadMapView(APIView):
-     def post(self,request,resume_id):
-          resume=ResumeAnalysis.objects.get(resume_id=resume_id,resume__user=request.user)
-          
+     def post(self,request):
+          resume= ResumeAnalysis.objects.get(
+               
+          )
           result=road_map(resume.missing_skills)
           serializer=RoadMapSerializer(result,many=True)
           return Response(serializer.data)
 
 
 class ReportView(APIView):
-     def get(self,request,resume_id):
-          resume=ResumeAnalysis.objects.get(resume_id=resume_id,resume__user=request.user)
+     def get(self,request):
+          try:
+               resume=ResumeAnalysis.objects.get(resume__user=request.user ,resume__is_active=True)
+          except ResumeAnalysis.DoesNotExist:
+               raise NotFound("No active resume found. Please activate a resume first.")
+          
           serializer=ReportSerializer(resume)
           data=serializer.data
           data['roadmap']=road_map(resume.missing_skills)
           return Response(data)
 
 class job_match(APIView):
-     def post(self,request,resume_id):
-          resume=ResumeAnalysis.objects.get(resume_id=resume_id,resume__user=request.user)
-
+     def post(self,request):
+          try:
+               resume=ResumeAnalysis.objects.get(resume__user=request.user ,resume__is_active=True)
+          except ResumeAnalysis.DoesNotExist:
+               raise NotFound("No active resume found. Please activate a resume first.")
           serializer=JobRole(data=request.data)
           serializer.is_valid(raise_exception=True)
           job_role = serializer.validated_data[

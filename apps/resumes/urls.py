@@ -5,10 +5,10 @@ urlpatterns=[
     path('<int:pk>/',ResumeView.as_view(),name='for one resume'),
     path('<int:pk>/delete/',ResumeDeleteView.as_view(),name='delete resume'),
     path('upload/',ResumeUploadView.as_view(),name='upload'),
-    path("<int:resume_id>/analyze/",ResumeAnalyzeView.as_view(),name='analyzed_resume'),
-    path("<int:resume_id>/roadmap/",RoadMapView.as_view(),name='analyzed_resume'),
-    path("<int:resume_id>/report/",ReportView.as_view(),name='report_resume'),
-    path("<int:resume_id>/job-match/",job_match.as_view(),name='job_match'),
+    path("analyze/",ResumeAnalyzeView.as_view(),name='analyzed_resume'),
+    path("roadmap/",RoadMapView.as_view(),name='analyzed_resume'),
+    path("report/",ReportView.as_view(),name='report_resume'),
+    path("job-match/",job_match.as_view(),name='job_match'),
     path("<int:resume_id>/activate/",ResumeActiveView.as_view(),name='resume_actived'),
    
 ]
