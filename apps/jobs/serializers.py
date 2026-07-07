@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Job
+from .models import Job,SaveJobs,ApplicationStatusHistory
 
 
 
@@ -40,4 +40,29 @@ class JobRecommendationsSerializer(serializers.ModelSerializer):
             "employment_type",
             "technologies",
             "ai_summary",
+        ]
+
+class SaveJobSerializer(serializers.ModelSerializer):
+    job = JobListSerializer(read_only=True)
+    class Meta:
+        model=SaveJobs
+        fields=[
+            "job",
+            'status',
+            'saved_at',
+        ]
+
+class StatusSerializer(serializers.Serializer):
+    status = serializers.ChoiceField(
+        choices=SaveJobs.Status.choices
+    )
+
+
+class TimelineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=ApplicationStatusHistory
+        fields=[
+            'status',
+            'notes',
+            'created_at',
         ]

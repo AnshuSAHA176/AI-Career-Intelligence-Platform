@@ -67,5 +67,5 @@ class ReportSerializer(serializers.ModelSerializer):
         fields=['score','found_skills','missing_skills','strengths','weaknesses','suggestions','summary']
 class JobRole(serializers.Serializer):
     job_role=serializers.CharField()
-
+    
 

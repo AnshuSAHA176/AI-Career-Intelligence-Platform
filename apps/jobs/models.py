@@ -1,5 +1,5 @@
 from django.db import models
-
+from config import settings
 
 class Job(models.Model):
 
@@ -71,3 +71,48 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+
+class SaveJobs(models.Model):
+    class Status(models.TextChoices):
+        SAVED = "saved", "Saved"
+        APPLIED = "applied", "Applied"
+        INTERVIEW = "interview", "Interview"
+        OFFER = "offer", "Offer"
+        ACCEPTED = "accepted", "Accepted"
+        REJECTED = "rejected", "Rejected"
+        WITHDRAWN = "withdrawn", "Withdrawn"
+    user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    job=models.ForeignKey(Job,on_delete=models.CASCADE,name="job")
+    status=models.CharField(max_length=20,choices=Status.choices,default=Status.SAVED)
+    saved_at=models.DateTimeField(auto_now_add=True)
+    class Meta:
+        constraints=[
+            models.UniqueConstraint(
+                fields=["user","job"],
+                name="unique_save_job"
+            )
+        ]
+
+class ApplicationStatusHistory(models.Model):
+    class Status(models.TextChoices):
+        SAVED = "saved", "Saved"
+        APPLIED = "applied", "Applied"
+        INTERVIEW = "interview", "Interview"
+        OFFER = "offer", "Offer"
+        ACCEPTED = "accepted", "Accepted"
+        REJECTED = "rejected", "Rejected"
+        WITHDRAWN = "withdrawn", "Withdrawn"
+
+    save_job=models.ForeignKey(SaveJobs,on_delete=models.CASCADE, related_name="timeline")
+    status=models.CharField(max_length=20,choices=Status.choices,default=Status.SAVED)
+    notes = models.TextField(
+    blank=True,
+    default="")
+
+    created_at=models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering=['-created_at']
+
