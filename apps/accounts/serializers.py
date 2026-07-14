@@ -55,3 +55,45 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "last_name",
             "profile"
         ]
+
+
+class UserDashBordSerializer(serializers.Serializer):
+    name=serializers.CharField()
+    target_role=serializers.CharField()
+
+
+class ResumeDashBordSerializer(serializers.Serializer):
+    title=serializers.CharField()
+    score=serializers.IntegerField()
+    primary_role=serializers.CharField()
+    uploaded_at=serializers.DateTimeField()
+
+
+
+class SkillSummarySerializer(serializers.Serializer):
+    found = serializers.IntegerField()
+    missing = serializers.IntegerField()
+
+
+class JobStaticsDashBordSerializer(serializers.Serializer):
+    saved=serializers.IntegerField()
+    applied=serializers.IntegerField()
+    interview=serializers.IntegerField()
+    offer=serializers.IntegerField()
+    accepted=serializers.IntegerField()
+    rejected=serializers.IntegerField()
+    withdrawn=serializers.IntegerField()
+
+
+class ActivitySerializer(serializers.Serializer):
+    job = serializers.CharField()
+    status = serializers.CharField()
+    created_at = serializers.DateTimeField()
+
+class DashboardSerializer(serializers.Serializer):
+    user=UserDashBordSerializer()
+    resume=ResumeDashBordSerializer()
+    job_statistics=JobStaticsDashBordSerializer()
+    skills=SkillSummarySerializer()
+    recommended_jobs=serializers.IntegerField()
+    recent_activity=ActivitySerializer(many=True)

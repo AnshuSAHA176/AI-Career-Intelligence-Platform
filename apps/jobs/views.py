@@ -9,7 +9,8 @@ from ..resumes.road_mape import match_resume,level_cheaker
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 class JobListView(generics.ListAPIView):
     queryset=Job.objects.all()
@@ -35,6 +36,15 @@ class JobListView(generics.ListAPIView):
         "employment_type",
     ]
     ordering_fields = ['posted_date' , 'company']
+    @method_decorator(cache_page(60*15,key_prefix='job_list'))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+    def get_queryset(self):
+        print('db\n\n\n\n\n\n\n')
+        return super().get_queryset()
+
+
+
 
 
 class JobDetailView(generics.RetrieveAPIView):
@@ -111,23 +121,27 @@ class StatusView(APIView):
     def patch(self,request,job_id):
         serializer=StatusSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        savejob=get_object_or_404(
-            SaveJobs,
+        savejob,create=SaveJobs.objects.get_or_create(
+            
             user=request.user,
             job_id=job_id,
         )
-        status=serializer.validated_data['status']
-        if not status:
+        new_status=serializer.validated_data['status']
+        if not new_status:
             return Response(
                 {"error": "Status is required."},
                 status=400)
         
-        savejob.status=status
+        old_status=savejob.status
         savejob.save(update_fields=['status'])
+        if old_status==new_status:
+            return Response({
+                 "message": "Status is already set to this value."
+            })
         ApplicationStatusHistory.objects.create(
-            save_job=savejob,
-            status=status
-        )
+                save_job=savejob,
+                status=new_status
+            )
         return Response({
             "message": "Status updated successfully."
         })
@@ -142,4 +156,4 @@ class ApplicationTimelineView(generics.ListAPIView):
             save_job__job_id=self.kwargs['job_id'],
             
                     )
-    
+
