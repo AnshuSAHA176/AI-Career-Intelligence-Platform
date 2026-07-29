@@ -67,7 +67,7 @@ class ResumeAnalyzeView(APIView):
     def post(self, request):
         try:
                resume = Resume.objects.get(
-                    user=request.id,
+                    user=request.user.id,
                     is_active=True
                )
         except Resume.DoesNotExist:

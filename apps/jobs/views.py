@@ -39,9 +39,7 @@ class JobListView(generics.ListAPIView):
     @method_decorator(cache_page(60*15,key_prefix='job_list'))
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
-    def get_queryset(self):
-        print('db\n\n\n\n\n\n\n')
-        return super().get_queryset()
+   
 
 
 

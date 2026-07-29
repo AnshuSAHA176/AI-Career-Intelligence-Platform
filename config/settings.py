@@ -98,9 +98,7 @@ DATABASES = {
         "PASSWORD": config["DB_PASSWORD"],
         "HOST": config["DB_HOST"],
          "PORT": config["DB_PORT"],
-         "OPTIONS": {
-            "sslmode": "require",
-        }
+         
         
     }
 }
@@ -168,14 +166,18 @@ SPECTACULAR_SETTINGS = {
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-        "KEY_PREFIX": "career_platform",
-        "TIMEOUT": 300,
-    }
-}
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         },
+#         "KEY_PREFIX": "career_platform",
+#         "TIMEOUT": 300,
+#     }
+# }
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

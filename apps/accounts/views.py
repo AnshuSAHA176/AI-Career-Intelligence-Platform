@@ -54,7 +54,9 @@ class DashboardView(APIView):
     @method_decorator(cache_page(60*15))
     @method_decorator(vary_on_headers("Authorization"))
     def get(self,request):
-        user=Profile.objects.get(user=request.user)
+        profile, _ = Profile.objects.get_or_create(
+    user=request.user
+)
         resume = get_object_or_404(
                 ResumeAnalysis,
                 resume__user=request.user,
@@ -114,7 +116,8 @@ class DashboardView(APIView):
         data = {
             "user": {
                 "name": request.user.get_full_name() or request.user.username,
-                "target_role": user.target_role,
+                "target_role": profile.target_role
+                ,
             },
 
             "resume": {
@@ -135,6 +138,6 @@ class DashboardView(APIView):
 
             "recent_activity": activities,
         }
-        serializer = DashboardSerializer(data)
+        serializer = DashboardSerializer(instance=data)
 
         return Response(serializer.data)
