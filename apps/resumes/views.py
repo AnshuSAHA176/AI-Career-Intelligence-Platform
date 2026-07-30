@@ -59,7 +59,12 @@ class ResumeUploadView(generics.CreateAPIView):
             resume=serializer.save(user=self.request.user)
             text=extract_text_from_pdf(resume.file)
             resume.extracted_text=text
-            resume.save(update_fields=["extracted_text"])
+            
+            resumes=Resume.objects.filter(user=self.request.user).update(is_active=False)
+          
+
+            resume.is_active=True
+            resume.save(update_fields=["extracted_text","is_active"])
 
 
 class ResumeAnalyzeView(APIView):
