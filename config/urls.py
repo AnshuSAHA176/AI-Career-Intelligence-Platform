@@ -15,7 +15,8 @@ urlpatterns = [
     path('resumes/',include('apps.resumes.urls')),
     path('jobs/',include('apps.jobs.urls')),
     path('silk/', include('silk.urls', namespace='silk')),
-   
+    path("agent/",include("apps.ai.urls"))
+   ,
 
     path(
         "api/schema/",

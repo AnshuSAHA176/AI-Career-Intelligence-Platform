@@ -11,8 +11,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from langchain_core.tools import tool
+
+
+
 
 class JobListView(generics.ListAPIView):
+    """
+    get all jobs from the database
+    """
     queryset=Job.objects.all()
     serializer_class=JobListSerializer
     filter_backends=[

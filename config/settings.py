@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'silk',
     'django_filters',
      "drf_spectacular",
+     "apps.ai",
 ]
 
 MIDDLEWARE = [

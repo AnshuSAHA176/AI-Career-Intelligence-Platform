@@ -7,3 +7,8 @@ python-decouple==3.8
 python-dotenv==1.2.1
 sqlparse==0.5.5
 typing_extensions==4.15.0
+jupyter
+langchain-openai
+langgraph
+langgraph-supervisor
+langchain_core

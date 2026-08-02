@@ -27,6 +27,7 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user=serializer.validated_data['user']
+        
         refresh=RefreshToken.for_user(user)
         access=refresh.access_token
         return Response({

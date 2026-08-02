@@ -4,10 +4,14 @@ import json
 from dotenv import load_dotenv
 from groq import Groq
 
-load_dotenv()
+
+def get_api():
+    load_dotenv()
+    return os.getenv("GROQ_API_KEY")
+
 
 client = Groq(
-    api_key=os.getenv("GROQ_API_KEY")
+    api_key=get_api()
 )
 
 ROLE_SKILLS = {
